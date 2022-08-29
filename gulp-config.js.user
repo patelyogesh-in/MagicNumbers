@@ -1,12 +1,12 @@
 module.exports = function () {
     var config = {
 		environment: "Local",
-		webRoot: "C:\\inetpub\\wwwroot\\ExtremeNetworks-sc.dev.local\\",
-		identityServerRoot: "C:\\inetpub\\wwwroot\\ExtremeNetworks-identityserver.dev.local\\",
+		webRoot: "C:\\inetpub\\wwwroot\\Name-sc.dev.local\\",
+		identityServerRoot: "C:\\inetpub\\wwwroot\\Name-identityserver.dev.local\\",
 		horizonRoot: "C:\\inetpub\\wwwroot\\Horizon.dev.local\\",
-		xConnectRoot: "C:\\inetpub\\wwwroot\\ExtremeNetworks-xconnect.dev.local\\",
-        devRoot: "C:\projects\ExtremeNetworks\Source",
-        solutionName: "ExtremeNetworks",
+		xConnectRoot: "C:\\inetpub\\wwwroot\\Name-xconnect.dev.local\\",
+        devRoot: "C:\projects\Name\Source",
+        solutionName: "Name",
         buildConfiguration: "Debug",
         MSBuildToolsVersion: 17.0,
 		buildMaxCpuCount: 1,

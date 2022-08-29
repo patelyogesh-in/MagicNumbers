@@ -6,7 +6,7 @@ module.exports = function () {
 		horizonRoot: "NA",
 		xConnectRoot: "NA",
         devRoot: "$(Build.SourcesDirectory)",
-        solutionName: "ExtremeNetworks",
+        solutionName: "SolutionName",
         buildConfiguration: "Release",
         MSBuildToolsVersion: 17,
 		buildMaxCpuCount: 1,

@@ -1,0 +1,76 @@
+# ASP.NET
+# Build and test ASP.NET projects.
+# Add steps that publish symbols, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/apps/aspnet/build-aspnet-4
+trigger:
+  - develop  
+
+pool:
+  vmImage: 'windows-2022'
+
+
+variables:
+  solution: '**/*.sln'
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
+
+steps:
+
+- task: PowerShell@2
+  displayName: 'PowerShell Script - SCS Package Generation'
+  inputs:
+    targetType: filePath
+    filePath: "$(System.DefaultWorkingDirectory)/EnvironmentFiles/scripts/Serialization/Generate-Package.ps1"
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: ItemPackage'
+  inputs:
+    PathtoPublish: 'serialized-items.itempackage'
+    ArtifactName: ItemPackage
+
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: Sitecore.json'
+  inputs:
+    PathtoPublish: 'sitecore.json'
+    ArtifactName: ItemPackage
+
+- task: NuGetToolInstaller@1
+
+- task: NuGetCommand@2
+  inputs:
+    command: 'restore'
+    restoreSolution: '**/*.sln'
+    feedsToUse: 'config'
+    nugetConfigPath: 'nuget.config'
+
+- task: Npm@1
+  displayName: 'npm install FED'
+  inputs:
+    workingDir: '$(System.DefaultWorkingDirectory)/FED'
+    verbose: false
+
+- task: gulp@0
+  displayName: 'gulp Publish-All-Assets FED'
+  inputs:
+    gulpFile: FED/gulpfile.js
+    targets: 'Publish-All-Assets'
+
+
+- task: Npm@1
+  displayName: 'npm install'
+  inputs:
+    verbose: false
+- task: gulp@0
+  displayName: 'gulp Publish-All-Projects'
+  inputs:
+    targets: 'Publish-All-Projects'
+    arguments: '--source $(Build.SourcesDirectory)'  
+- task: ArchiveFiles@2
+  displayName: 'Archive Output'
+  inputs:
+    rootFolderOrFile: Output 
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish Artifact: drop'
+  inputs:
+    PathtoPublish: Output
+    
